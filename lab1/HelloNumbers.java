@@ -1,6 +1,3 @@
-/**
- * Created by Kailin Tang on 2017/7/26.
- */
 public class HelloNumbers {
     public static void main(String[] args){
         int sum = 0;
