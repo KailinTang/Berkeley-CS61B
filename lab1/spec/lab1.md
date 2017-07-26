@@ -45,7 +45,7 @@ fairly tricky to understand, so it is likely that you will encounter significant
 frustration at some point as you learn to use git.
 
 Before you proceed, read sections A-C of Sarah Kim's [Using Git
-Guide](../../guides/using-git.html)
+Guide](http://datastructur.es/sp17/materials/guides/using-git.html)
 
 <div class="redtext">**STOP! Do not proceed until you have read sections A
 through C of the Git Guide.**</div> You do not need to read section D or later.
