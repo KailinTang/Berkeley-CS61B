@@ -42,6 +42,11 @@ public class NBody {
         }
 
         int time = 0;
+
+        /* Disable the audio
+        StdAudio.play("./audio/2001.mid");
+		*/
+		
         while(time < T){
             double[] xForces = new double[planets.length];
             double[] yForces = new double[planets.length];
@@ -63,6 +68,13 @@ public class NBody {
 
             StdDraw.show(10);
             time += dt;
+        }
+
+        StdOut.printf("%d\n", planets.length);
+        StdOut.printf("%.2e\n", radius);
+        for(int i = 0; i < planets.length; i++) {
+            StdOut.printf("%.4e %.4e %.4e %.4e %.4e %s\n",
+                    planets[i].xxPos, planets[i].yyPos, planets[i].xxVel, planets[i].yyVel, planets[i].mass, planets[i].imgFileName);
         }
     }
 }
