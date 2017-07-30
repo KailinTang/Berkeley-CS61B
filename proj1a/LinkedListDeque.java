@@ -1,51 +1,51 @@
 public class LinkedListDeque<Item> {
 
-    private class IntNode {
-        public IntNode prev;
+    private class Node {
+        public Node prev;
         public Item item;
-        public IntNode next;
+        public Node next;
 
-        public IntNode (IntNode prev, Item item, IntNode next) {
+        public Node (Node prev, Item item, Node next) {
             this.prev = prev;
             this.item = item;
             this.next = next;
         }
     }
 
-    private IntNode sentinel;
+    private Node sentinel;
     private int size;
 
-    public SLList(Item x) {
-        sentinel = new IntNode(null, null, null);
-        sentinel.prev = sentinel;
-        sentinel.next = sentinel;
+    public LinkedListDeque() {
+        this.sentinel = new Node(null, null, null);
+        this.sentinel.prev = this.sentinel;
+        this.sentinel.next = this.sentinel;
         size = 0;
     }
 
     public LinkedListDeque(Item x) {
-        sentinel = new IntNode(null, 0, null);
-        sentinel.next = new IntNode(sentinel, x, sentinel);
-        sentinel.prev = sentinel.next;
+        this.sentinel = new Node(null, null, null);
+        this.sentinel.next = new Node(this.sentinel, x, this.sentinel);
+        this.sentinel.prev = this.sentinel.next;
         size = 1;
     }
 
     public void addFirst(Item x) {
-        IntNode newNode = new IntNode(sentinel, x, sentinel.next);
-        sentinel.next.prev = newNode;
-        sentinel.next = newNode;
+        Node newNode = new Node(this.sentinel, x, this.sentinel.next);
+        this.sentinel.next.prev = newNode;
+        this.sentinel.next = newNode;
         size += 1;
     }
 
     public void addLast(Item x) {
-        IntNode newNode = new IntNode(sentinel.prev, x, sentinel);
-        sentinel.prev.next = newNode;
-        sentinel.prev = newNode;
+        Node newNode = new Node(this.sentinel.prev, x, this.sentinel);
+        this.sentinel.prev.next = newNode;
+        this.sentinel.prev = newNode;
         size += 1;
 
     }
 
     public boolean isEmpty() {
-        if(sentinel.equals(sentinel.next)) {
+        if(this.size == 0) {
             return true;
         }
         else{
@@ -58,35 +58,57 @@ public class LinkedListDeque<Item> {
     }
 
     public void printDeque() {
-        IntNode tempNode = sentinel.next;
-        while(!sentinel.equals(tempNode)){
+        Node tempNode = this.sentinel.next;
+        while(!this.sentinel.equals(tempNode)){
             System.out.println(tempNode.item);
             tempNode = tempNode.next;
         }
     }
 
     public Item removeFirst() {
-        if(sentinel.equals(sentinel.next)){
+        if(this.isEmpty()){
             return null;
         }
-        IntNode first = sentinel.next;
-        sentinel.next.next.prev = sentinel;
-        sentinel.next = sentinel.next.next;
+        Node first = this.sentinel.next;
+        this.sentinel.next.next.prev = this.sentinel;
+        this.sentinel.next = this.sentinel.next.next;
         size -= 1;
         return first.item;
     }
 
     public Item removeLast() {
-        if(sentinel.equals(sentinel.prev)){
+        if(this.isEmpty()){
             return null;
         }
-        IntNode last = sentinel.prev;
-        sentinel.prev.prev.next = sentinel;
-        sentinel.prev = sentinel.prev.prev;
+        Node last = this.sentinel.prev;
+        this.sentinel.prev.prev.next = this.sentinel;
+        this.sentinel.prev = this.sentinel.prev.prev;
         size -= 1;
         return last.item;
     }
 
-    
+    public Item get(int index) {
+        if(index >= this.size) {
+            return null;
+        }
+        Node tempNode = this.sentinel;
+        for(int i = 0; i <= index; i++) {
+            tempNode = tempNode.next;
+        }
+        return tempNode.item;
+    }
 
+    public Item getRecursive(int index) {
+        if(index >= this.size) {
+            return null;
+        }
+        return getRecursiveHelper(index, this.sentinel.next);
+    }
+
+    public Item getRecursiveHelper(int index, Node x) {
+        if(index == 0) {
+            return x.item;
+        }
+        return getRecursiveHelper(index - 1, x.next);
+    }
 }
