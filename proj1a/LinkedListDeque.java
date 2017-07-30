@@ -65,6 +65,28 @@ public class LinkedListDeque<Item> {
         }
     }
 
-    public Item removeFirst
+    public Item removeFirst() {
+        if(sentinel.equals(sentinel.next)){
+            return null;
+        }
+        IntNode first = sentinel.next;
+        sentinel.next.next.prev = sentinel;
+        sentinel.next = sentinel.next.next;
+        size -= 1;
+        return first.item;
+    }
+
+    public Item removeLast() {
+        if(sentinel.equals(sentinel.prev)){
+            return null;
+        }
+        IntNode last = sentinel.prev;
+        sentinel.prev.prev.next = sentinel;
+        sentinel.prev = sentinel.prev.prev;
+        size -= 1;
+        return last.item;
+    }
+
+    
 
 }
