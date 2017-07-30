@@ -60,9 +60,10 @@ public class LinkedListDeque<Item> {
     public void printDeque() {
         Node tempNode = this.sentinel.next;
         while(!this.sentinel.equals(tempNode)){
-            System.out.println(tempNode.item);
+            System.out.print(tempNode.item + " ");
             tempNode = tempNode.next;
         }
+        System.out.print("\n");
     }
 
     public Item removeFirst() {
