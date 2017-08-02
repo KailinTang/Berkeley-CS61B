@@ -12,8 +12,8 @@ public class ArrayDeque<Item> {
     public ArrayDeque() {
         this.items = (Item[]) new Object[INITIAL_SIZE];
         this.size = 0;
-        this.nextFirst = 3;
-        this.nextLast = 4;
+        this.nextFirst = 0;
+        this.nextLast = 1;
     }
 
     public void addFirst(Item x) {
@@ -53,16 +53,20 @@ public class ArrayDeque<Item> {
     }
 
     private void resize(int capacity) {
-        if(this.nextLast == 0 &&  this.nextFirst == this.size()-1) {
             Item[] tempItem = (Item[]) new Object[capacity];
-            System.arraycopy(items, 0, tempItem, capacity/RESIZE_FACTOR/2, this.size);
+            if(this.nextFirst == this.size-1) {
+                this.nextFirst = 0;
+            }
+            else {
+                this.nextFirst += 1;
+            }
+            int frontLength = this.size - this.nextFirst;
+            System.arraycopy(items, nextFirst, tempItem, 1, frontLength);
+            int backLength = this.nextLast;
+            System.arraycopy(items, 0, tempItem, frontLength+1, backLength);
             this.items = tempItem;
-            this.nextFirst += capacity/RESIZE_FACTOR/2;
-            this.nextLast += capacity/RESIZE_FACTOR/2;
-        }
-        //Item[] a1 = (Item[]) new Object[capacity/2];
-        //Item[] a2 = (Item[]) new Object[capacity/2];
-        //System.arraycopy(items, 0, a, capacity/RESIZE_FACTOR/2, this.size);
+            this.nextFirst = 0;
+            this.nextLast = this.size + 1;
     }
 
     public boolean isEmpty() {
@@ -142,6 +146,8 @@ public class ArrayDeque<Item> {
         arrayDeque.addLast("6");
         arrayDeque.addLast("7");
         arrayDeque.addFirst("8");
+        arrayDeque.addFirst("9");
+        arrayDeque.addFirst("10");
         arrayDeque.removeLast();
         arrayDeque.removeLast();
         arrayDeque.removeLast();
