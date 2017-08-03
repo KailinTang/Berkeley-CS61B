@@ -18,7 +18,7 @@ public class ArrayDeque<Item> {
 
     public void addFirst(Item x) {
         if(this.isFull()) {
-            this.resize(size * RESIZE_FACTOR);
+            this.resizeLarge(size * RESIZE_FACTOR);
         }
         if(nextFirst > 0) {
             items[nextFirst] = x;
@@ -34,7 +34,7 @@ public class ArrayDeque<Item> {
 
     public void addLast(Item x) {
         if(this.isFull()) {
-            this.resize(size * RESIZE_FACTOR);
+            this.resizeLarge(size * RESIZE_FACTOR);
         }
         if(nextLast < items.length-1) {
             items[nextLast] = x;
@@ -52,7 +52,7 @@ public class ArrayDeque<Item> {
         return this.size;
     }
 
-    private void resize(int capacity) {
+    private void resizeLarge(int capacity) {
             Item[] tempItem = (Item[]) new Object[capacity];
             if(this.nextFirst == this.size-1) {
                 this.nextFirst = 0;
@@ -68,6 +68,7 @@ public class ArrayDeque<Item> {
             this.nextFirst = 0;
             this.nextLast = this.size + 1;
     }
+
 
     public boolean isEmpty() {
         if(size == 0){
@@ -116,6 +117,9 @@ public class ArrayDeque<Item> {
             Item tempItem = items[this.size-1];
             this.items[this.size-1] = null;
             this.nextLast = this.size-1;
+            if(this.isResizeSmallRequired(this.calculateUsageRate())) {
+                this.resizeSmall();
+            }
             this.size -= 1;
             return tempItem;
         }
@@ -123,6 +127,9 @@ public class ArrayDeque<Item> {
             Item tempItem = items[this.nextLast - 1];
             this.items[this.nextLast -1] = null;
             this.nextLast -= 1;
+            if(this.isResizeSmallRequired(this.calculateUsageRate())) {
+                this.resizeSmall();
+            }
             this.size -= 1;
             return tempItem;
         }
@@ -130,6 +137,40 @@ public class ArrayDeque<Item> {
             return null;
         }
     }
+
+    private double calculateUsageRate() {
+        return ((double) this.size()) / this.items.length;
+    }
+
+    private boolean isResizeSmallRequired(double usageRate) {
+        if(this.items.length == INITIAL_SIZE) {
+            return false;
+        }
+        else if(usageRate < USAGE_FACTOR) {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    private void resizeSmall() {
+            Item[] tempItem = (Item[]) new Object[this.items.length/this.RESIZE_FACTOR];
+            if(this.nextFirst < this.nextLast) {
+                System.arraycopy(this.items, this.nextFirst+1, tempItem, 1, this.size-1);
+                this.items = tempItem;
+                this.nextFirst = 0;
+                this.nextLast = this.size;
+            }
+            else {
+                System.arraycopy(this.items, this.nextFirst+1, tempItem, 1, this.items.length-this.nextFirst-1);
+                System.arraycopy(this.items, 0, tempItem, this.items.length-this.nextFirst, nextLast);
+                this.items = tempItem;
+                this.nextFirst = 0;
+                this.nextLast = this.size;
+            }
+    }
+
 
     public Item get(int index) {
         return null;
@@ -143,8 +184,8 @@ public class ArrayDeque<Item> {
         arrayDeque.addFirst("3");
         arrayDeque.addFirst("4");
         arrayDeque.addFirst("5");
-        arrayDeque.addLast("6");
-        arrayDeque.addLast("7");
+        arrayDeque.addFirst("6");
+        arrayDeque.addFirst("7");
         arrayDeque.addFirst("8");
         arrayDeque.addFirst("9");
         arrayDeque.addFirst("10");
@@ -153,8 +194,34 @@ public class ArrayDeque<Item> {
         arrayDeque.removeLast();
         arrayDeque.removeLast();
         arrayDeque.removeLast();
+        arrayDeque.removeLast();
+        arrayDeque.removeLast();
+        arrayDeque.removeLast();
+        arrayDeque.removeLast();
     }
 
 }
+
+/*
+        arrayDeque.addFirst("1");
+        arrayDeque.addFirst("2");
+        arrayDeque.addFirst("3");
+        arrayDeque.addFirst("4");
+        arrayDeque.addFirst("5");
+        arrayDeque.addFirst("6");
+        arrayDeque.addFirst("7");
+        arrayDeque.addFirst("8");
+        arrayDeque.addFirst("9");
+        arrayDeque.addFirst("10");
+        arrayDeque.removeLast();
+        arrayDeque.removeLast();
+        arrayDeque.removeLast();
+        arrayDeque.removeLast();
+        arrayDeque.removeLast();
+        arrayDeque.removeLast();
+        arrayDeque.removeLast();
+        arrayDeque.removeLast();
+        arrayDeque.removeLast();
+ */
 
 
