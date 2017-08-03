@@ -52,24 +52,6 @@ public class ArrayDeque<Item> {
         return this.size;
     }
 
-    private void resizeLarge(int capacity) {
-            Item[] tempItem = (Item[]) new Object[capacity];
-            if(this.nextFirst == this.size-1) {
-                this.nextFirst = 0;
-            }
-            else {
-                this.nextFirst += 1;
-            }
-            int frontLength = this.size - this.nextFirst;
-            System.arraycopy(items, nextFirst, tempItem, 1, frontLength);
-            int backLength = this.nextLast;
-            System.arraycopy(items, 0, tempItem, frontLength+1, backLength);
-            this.items = tempItem;
-            this.nextFirst = 0;
-            this.nextLast = this.size + 1;
-    }
-
-
     public boolean isEmpty() {
         if(size == 0){
             return true;
@@ -89,7 +71,11 @@ public class ArrayDeque<Item> {
     }
 
     public void printDeque() {
-
+        Item[] tempItems = this.arrayRestore();
+        for(Item item:tempItems) {
+            System.out.print(item + " ");
+        }
+        System.out.print("\n");
     }
 
     public Item removeFirst() {
@@ -138,6 +124,27 @@ public class ArrayDeque<Item> {
         }
     }
 
+    public Item get(int index) {
+        return this.arrayRestore()[index];
+    }
+
+    private void resizeLarge(int capacity) {
+        Item[] tempItems = (Item[]) new Object[capacity];
+        if(this.nextFirst == this.size-1) {
+            this.nextFirst = 0;
+        }
+        else {
+            this.nextFirst += 1;
+        }
+        int frontLength = this.size - this.nextFirst;
+        System.arraycopy(items, nextFirst, tempItems, 1, frontLength);
+        int backLength = this.nextLast;
+        System.arraycopy(items, 0, tempItems, frontLength+1, backLength);
+        this.items = tempItems;
+        this.nextFirst = 0;
+        this.nextLast = this.size + 1;
+    }
+
     private double calculateUsageRate() {
         return ((double) this.size()) / this.items.length;
     }
@@ -155,40 +162,49 @@ public class ArrayDeque<Item> {
     }
 
     private void resizeSmall() {
-            Item[] tempItem = (Item[]) new Object[this.items.length/this.RESIZE_FACTOR];
+            Item[] tempItems = (Item[]) new Object[this.items.length/this.RESIZE_FACTOR];
             if(this.nextFirst < this.nextLast) {
-                System.arraycopy(this.items, this.nextFirst+1, tempItem, 1, this.size-1);
-                this.items = tempItem;
+                System.arraycopy(this.items, this.nextFirst+1, tempItems, 1, this.size-1);
+                this.items = tempItems;
                 this.nextFirst = 0;
                 this.nextLast = this.size;
             }
             else {
-                System.arraycopy(this.items, this.nextFirst+1, tempItem, 1, this.items.length-this.nextFirst-1);
-                System.arraycopy(this.items, 0, tempItem, this.items.length-this.nextFirst, nextLast);
-                this.items = tempItem;
+                System.arraycopy(this.items, this.nextFirst+1, tempItems, 1, this.items.length-this.nextFirst-1);
+                System.arraycopy(this.items, 0, tempItems, this.items.length-this.nextFirst, nextLast);
+                this.items = tempItems;
                 this.nextFirst = 0;
                 this.nextLast = this.size;
             }
     }
 
-
-    public Item get(int index) {
-        return null;
+    private Item[] arrayRestore() {
+        Item[] tempItems = (Item[]) new Object[this.items.length];
+        if(this.nextFirst < this.nextLast) {
+            System.arraycopy(this.items, this.nextFirst+1, tempItems, 0, this.size());
+        }
+        else {
+            System.arraycopy(this.items, this.nextFirst+1, tempItems, 0, this.items.length-this.nextFirst-1);
+            System.arraycopy(this.items, 0, tempItems, this.items.length-this.nextFirst-1, this.nextLast);
+        }
+        return tempItems;
     }
 
     public static void main(String[] args) {
         ArrayDeque<String> arrayDeque = new ArrayDeque<>();
         arrayDeque.size();
         arrayDeque.addFirst("1");
-        arrayDeque.addFirst("2");
-        arrayDeque.addFirst("3");
-        arrayDeque.addFirst("4");
-        arrayDeque.addFirst("5");
-        arrayDeque.addFirst("6");
-        arrayDeque.addFirst("7");
-        arrayDeque.addFirst("8");
-        arrayDeque.addFirst("9");
-        arrayDeque.addFirst("10");
+        arrayDeque.addLast("2");
+        arrayDeque.addLast("3");
+        arrayDeque.addLast("4");
+        arrayDeque.addLast("5");
+        arrayDeque.addLast("6");
+        arrayDeque.printDeque();
+        arrayDeque.addLast("7");
+        arrayDeque.addLast("8");
+        arrayDeque.addLast("9");
+        arrayDeque.addLast("10");
+        String str = arrayDeque.get(0);
         arrayDeque.removeLast();
         arrayDeque.removeLast();
         arrayDeque.removeLast();
