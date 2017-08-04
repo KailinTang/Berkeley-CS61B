@@ -12,7 +12,7 @@ public class ArrayDeque<Item> {
     public ArrayDeque() {
         this.items = (Item[]) new Object[INITIAL_SIZE];
         this.size = 0;
-        this.nextFirst = 0;
+        this.nextFirst = 0; //initial front/back pointer position
         this.nextLast = 1;
     }
 
@@ -52,6 +52,10 @@ public class ArrayDeque<Item> {
         return this.size;
     }
 
+    public int getArrayLength() {
+        return this.items.length;
+    }
+
     public boolean isEmpty() {
         if(size == 0){
             return true;
@@ -84,6 +88,9 @@ public class ArrayDeque<Item> {
             this.items[0] = null;
             this.nextFirst = 0;
             this.size -= 1;
+            if(this.isResizeSmallRequired(this.calculateUsageRate())) {
+                this.resizeSmall();
+            }
             return tempItem;
         }
         else if(!this.isEmpty()) {
@@ -91,6 +98,9 @@ public class ArrayDeque<Item> {
             this.items[this.nextFirst + 1] = null;
             this.nextFirst += 1;
             this.size -= 1;
+            if(this.isResizeSmallRequired(this.calculateUsageRate())) {
+                this.resizeSmall();
+            }
             return tempItem;
         }
         else {
@@ -103,20 +113,20 @@ public class ArrayDeque<Item> {
             Item tempItem = items[this.size-1];
             this.items[this.size-1] = null;
             this.nextLast = this.size-1;
+            this.size -= 1;
             if(this.isResizeSmallRequired(this.calculateUsageRate())) {
                 this.resizeSmall();
             }
-            this.size -= 1;
             return tempItem;
         }
         else if(!this.isEmpty()) {
             Item tempItem = items[this.nextLast - 1];
             this.items[this.nextLast -1] = null;
             this.nextLast -= 1;
+            this.size -= 1;
             if(this.isResizeSmallRequired(this.calculateUsageRate())) {
                 this.resizeSmall();
             }
-            this.size -= 1;
             return tempItem;
         }
         else{
@@ -145,6 +155,23 @@ public class ArrayDeque<Item> {
         this.nextLast = this.size + 1;
     }
 
+    private void resizeSmall() {
+        Item[] tempItems = (Item[]) new Object[this.items.length/this.RESIZE_FACTOR];
+        if(this.nextFirst < this.nextLast) {
+            System.arraycopy(this.items, this.nextFirst+1, tempItems, 1, this.size);
+            this.items = tempItems;
+            this.nextFirst = 0;
+            this.nextLast = this.size + 1;
+        }
+        else {
+            System.arraycopy(this.items, this.nextFirst+1, tempItems, 1, this.items.length-this.nextFirst-1);
+            System.arraycopy(this.items, 0, tempItems, this.items.length-this.nextFirst, nextLast);
+            this.items = tempItems;
+            this.nextFirst = 0;
+            this.nextLast = this.size + 1;
+        }
+    }
+
     private double calculateUsageRate() {
         return ((double) this.size()) / this.items.length;
     }
@@ -161,23 +188,6 @@ public class ArrayDeque<Item> {
         }
     }
 
-    private void resizeSmall() {
-            Item[] tempItems = (Item[]) new Object[this.items.length/this.RESIZE_FACTOR];
-            if(this.nextFirst < this.nextLast) {
-                System.arraycopy(this.items, this.nextFirst+1, tempItems, 1, this.size-1);
-                this.items = tempItems;
-                this.nextFirst = 0;
-                this.nextLast = this.size;
-            }
-            else {
-                System.arraycopy(this.items, this.nextFirst+1, tempItems, 1, this.items.length-this.nextFirst-1);
-                System.arraycopy(this.items, 0, tempItems, this.items.length-this.nextFirst, nextLast);
-                this.items = tempItems;
-                this.nextFirst = 0;
-                this.nextLast = this.size;
-            }
-    }
-
     private Item[] arrayRestore() {
         Item[] tempItems = (Item[]) new Object[this.items.length];
         if(this.nextFirst < this.nextLast) {
@@ -189,55 +199,6 @@ public class ArrayDeque<Item> {
         }
         return tempItems;
     }
-
-    public static void main(String[] args) {
-        ArrayDeque<String> arrayDeque = new ArrayDeque<>();
-        arrayDeque.size();
-        arrayDeque.addFirst("1");
-        arrayDeque.addLast("2");
-        arrayDeque.addLast("3");
-        arrayDeque.addLast("4");
-        arrayDeque.addLast("5");
-        arrayDeque.addLast("6");
-        arrayDeque.printDeque();
-        arrayDeque.addLast("7");
-        arrayDeque.addLast("8");
-        arrayDeque.addLast("9");
-        arrayDeque.addLast("10");
-        String str = arrayDeque.get(0);
-        arrayDeque.removeLast();
-        arrayDeque.removeLast();
-        arrayDeque.removeLast();
-        arrayDeque.removeLast();
-        arrayDeque.removeLast();
-        arrayDeque.removeLast();
-        arrayDeque.removeLast();
-        arrayDeque.removeLast();
-        arrayDeque.removeLast();
-    }
-
 }
-
-/*
-        arrayDeque.addFirst("1");
-        arrayDeque.addFirst("2");
-        arrayDeque.addFirst("3");
-        arrayDeque.addFirst("4");
-        arrayDeque.addFirst("5");
-        arrayDeque.addFirst("6");
-        arrayDeque.addFirst("7");
-        arrayDeque.addFirst("8");
-        arrayDeque.addFirst("9");
-        arrayDeque.addFirst("10");
-        arrayDeque.removeLast();
-        arrayDeque.removeLast();
-        arrayDeque.removeLast();
-        arrayDeque.removeLast();
-        arrayDeque.removeLast();
-        arrayDeque.removeLast();
-        arrayDeque.removeLast();
-        arrayDeque.removeLast();
-        arrayDeque.removeLast();
- */
 
 
