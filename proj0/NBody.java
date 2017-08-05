@@ -11,8 +11,8 @@ public class NBody {
         Planet[] planets = new Planet[planetNum];
         double radius = Double.parseDouble(in.readLine());
         int i = 0;
-        while(in.hasNextLine()) {
-            if (i == planetNum){
+        while (in.hasNextLine()) {
+            if (i == planetNum) {
                 break;
             }
             double xxPos = in.readDouble();
@@ -47,16 +47,16 @@ public class NBody {
         StdAudio.play("./audio/2001.mid");
 		*/
 		
-        while(time < T){
+        while (time < T) {
             double[] xForces = new double[planets.length];
             double[] yForces = new double[planets.length];
 
-            for(int i = 0; i < planets.length; i++) {
+            for (int i = 0; i < planets.length; i++) {
                 xForces[i] = planets[i].calcNetForceExertedByX(planets);
                 yForces[i] = planets[i].calcNetForceExertedByY(planets);
             }
 
-            for(int i = 0; i < planets.length; i++) {
+            for (int i = 0; i < planets.length; i++) {
                 planets[i].update(dt, xForces[i], yForces[i]);
             }
 
@@ -72,7 +72,7 @@ public class NBody {
 
         StdOut.printf("%d\n", planets.length);
         StdOut.printf("%.2e\n", radius);
-        for(int i = 0; i < planets.length; i++) {
+        for (int i = 0; i < planets.length; i++) {
             StdOut.printf("%.4e %.4e %.4e %.4e %.4e %s\n",
                     planets[i].xxPos, planets[i].yyPos, planets[i].xxVel, planets[i].yyVel, planets[i].mass, planets[i].imgFileName);
         }

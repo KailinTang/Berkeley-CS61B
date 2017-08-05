@@ -1,4 +1,4 @@
-public class Planet{
+public class Planet {
     public double xxPos;
     public double yyPos;
     public double xxVel;
@@ -16,7 +16,7 @@ public class Planet{
         this.imgFileName = img;
     }
 
-    public Planet(Planet p){
+    public Planet(Planet p) {
         this.xxPos = p.xxPos;
         this.yyPos = p.yyPos;
         this.xxVel = p.xxVel;
@@ -47,8 +47,8 @@ public class Planet{
 
     public double calcNetForceExertedByX(Planet[] planets) {
         double xNetForce = 0;
-        for(Planet p : planets) {
-            if(this.equals(p) == true){
+        for (Planet p : planets) {
+            if (this.equals(p) == true) {
                 continue;
             }
             xNetForce += this.calcForceExertedByX(p);
@@ -58,8 +58,8 @@ public class Planet{
 
     public double calcNetForceExertedByY(Planet[] planets) {
         double yNetForce = 0;
-        for(Planet p : planets) {
-            if(this.equals(p) == true){
+        for (Planet p : planets) {
+            if (this.equals(p) == true) {
                 continue;
             }
             yNetForce += this.calcForceExertedByY(p);
@@ -67,7 +67,7 @@ public class Planet{
         return yNetForce;
     }
 
-    public void update(double dt, double fX, double fY){
+    public void update(double dt, double fX, double fY) {
         double accelerationX = fX / this.mass;
         double accelerationY = fY / this.mass;
         this.xxVel = this.xxVel + accelerationX * dt;
@@ -76,7 +76,7 @@ public class Planet{
         this.yyPos = this.yyPos + this.yyVel * dt;
     }
 
-    public void draw(){
+    public void draw() {
         String fileName = "./images/" + this.imgFileName;
         StdDraw.picture(this.xxPos, this.yyPos, fileName);
     }

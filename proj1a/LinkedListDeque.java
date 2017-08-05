@@ -1,11 +1,11 @@
 public class LinkedListDeque<Item> {
 
     private class Node {
-        public Node prev;
-        public Item item;
-        public Node next;
+        private Node prev;
+        private Item item;
+        private Node next;
 
-        public Node (Node prev, Item item, Node next) {
+        public Node(Node prev, Item item, Node next) {
             this.prev = prev;
             this.item = item;
             this.next = next;
@@ -45,10 +45,9 @@ public class LinkedListDeque<Item> {
     }
 
     public boolean isEmpty() {
-        if(this.size == 0) {
+        if (this.size() == 0) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
@@ -59,7 +58,7 @@ public class LinkedListDeque<Item> {
 
     public void printDeque() {
         Node tempNode = this.sentinel.next;
-        while(!this.sentinel.equals(tempNode)){
+        while (!this.sentinel.equals(tempNode)) {
             System.out.print(tempNode.item + " ");
             tempNode = tempNode.next;
         }
@@ -67,7 +66,7 @@ public class LinkedListDeque<Item> {
     }
 
     public Item removeFirst() {
-        if(this.isEmpty()){
+        if (this.isEmpty()) {
             return null;
         }
         Node first = this.sentinel.next;
@@ -78,7 +77,7 @@ public class LinkedListDeque<Item> {
     }
 
     public Item removeLast() {
-        if(this.isEmpty()){
+        if (this.isEmpty()) {
             return null;
         }
         Node last = this.sentinel.prev;
@@ -89,25 +88,25 @@ public class LinkedListDeque<Item> {
     }
 
     public Item get(int index) {
-        if(index >= this.size) {
+        if (index >= this.size()) {
             return null;
         }
         Node tempNode = this.sentinel;
-        for(int i = 0; i <= index; i++) {
+        for (int i = 0; i <= index; i++) {
             tempNode = tempNode.next;
         }
         return tempNode.item;
     }
 
     public Item getRecursive(int index) {
-        if(index >= this.size) {
+        if (index >= this.size()) {
             return null;
         }
         return getRecursiveHelper(index, this.sentinel.next);
     }
 
     public Item getRecursiveHelper(int index, Node x) {
-        if(index == 0) {
+        if (index == 0) {
             return x.item;
         }
         return getRecursiveHelper(index - 1, x.next);
