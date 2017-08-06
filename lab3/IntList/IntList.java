@@ -129,6 +129,29 @@ public class IntList {
         */
     }
 
+
+    /**
+     * Returns the reverse of the given IntList.
+     * This method is destructive. If given null
+     * as an input, returns null.
+     */
+    public static IntList reverse(IntList A) {
+        IntList tempList = A;
+        if (A == null) {
+            return null;
+        }
+        IntList frontOfReversed = null;
+        IntList nextNodeToAdd = tempList;
+        while (nextNodeToAdd != null) {
+            IntList remainderOfOriginal = nextNodeToAdd.rest;
+            nextNodeToAdd.rest = frontOfReversed;
+            frontOfReversed = nextNodeToAdd;
+            nextNodeToAdd = remainderOfOriginal;
+        }
+        return frontOfReversed;
+    }
+
+
     /**
      * DO NOT MODIFY ANYTHING BELOW THIS LINE! Many of the concepts below here
      * will be introduced later in the course or feature some form of advanced
