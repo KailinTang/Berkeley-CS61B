@@ -8,7 +8,7 @@ public class TestArrayDeque1B {
         StudentArrayDeque<Integer> stuArrDeque = new StudentArrayDeque<>();
         ArrayDequeSolution<Integer> arrDequeSol = new ArrayDequeSolution<>();
         OperationSequence operSeq = new OperationSequence();
-        for(int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 1000; i++) {
             double randNum = StdRandom.uniform();
             if (randNum < 0.25) {
                 operSeq.addOperation(new DequeOperation("addFirst", i));
